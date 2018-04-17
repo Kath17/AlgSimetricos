@@ -86,20 +86,24 @@ vector<string> Separar2(char* texto)
 
     string resultado="";
     int j=1;
+
     for (int i=0; i<longitud; i++)
     {
+
         char character = texto[i];
-        if(character=='-')
-            j++;
         string str(1,character);
         resultado = resultado + str;
-        if(j==16 || i+1 == longitud)
+
+        j++;
+        if( j==33 || i+1 == longitud )
         {
             Bloques.push_back(resultado);
-            resultado ="";
+            resultado = "";
             j=1;
         }
-     }
+
+    }
+
     return Bloques;
 }
 
@@ -111,61 +115,132 @@ void MainWindow::on_pushButton_clicked()
     // ------------------------ RIJNDAEL -----------------------//
     if(RoS == false){
 
-        std::cout << "TEXTO"  << texto.toStdString() <<std::endl;
-        std::cout << "LLAVE"  << llav.toStdString() <<std::endl;
-        QString hex =string_to_hex(texto);
-        string tmp = hex.toStdString();
-        char *hex2 = new char[tmp.length()+1];
-        std::strcpy(hex2, tmp.c_str());
-        vector<string> separado2 = Separar2(hex2);
+        std::cout << "TEXTO: "  << texto.toStdString() <<std::endl;
+        std::cout << "LLAVE: "  << llav.toStdString() <<std::endl;
 
-        for(int i = 0; i<separado2.size();i++)
+
+        //Verificar tamaño de llave.
+        if( llav.size()%32 != 0  )
         {
-            std::cout << separado2[i];
+
+            ui->textEdit_2->setText("Inserte una llave de 256 bits (32 caracteres)");
 
         }
-
-        rounds = 256;
-
-        keyLength = rounds/32;
-        rounds = keyLength + 6;
-
-        for(int i=0; i<separado2.size();i++)
+        else
         {
 
-            unsigned char c[16];
+            //Tamaño de llave por defecto.
+            rounds = 256; std::cout << "Tamaño de la llave:" << rounds << std::endl;
+            keyLength = rounds/32; std::cout << "Tamaño de la llave:" << keyLength << std::endl;
+            rounds = keyLength + 6; std::cout << "Rondas:" << rounds << std::endl;
+            //CONVERTIR LLAVE EN HEXADECIMAL.
+            QString hex_llav =string_to_hex(llav);
+            string tmp_llav = hex_llav.toStdString();
+            std::cout << "LLAVE HEX: " << tmp_llav << std::endl;
+            unsigned char lla[32];
 
-
-            for(int i=0, j=0; i<separado2[i].length();i++, j++)
+            for( int i=0, j=0; i<tmp_llav.size(); i++, j++  )
             {
-
-                //char *hex="f7";
-                char *hex = new char[2];
-                std::strcpy(hex,separado2[i].substr(i,2).c_str()); ;
+                char *hex2 = new char[2];
+                std::strcpy(hex2, tmp_llav.substr(i,2).c_str() );
                 int d;
-                sscanf(hex,"%02x", &d);
-                c[j]=(unsigned char)d;
-                printf("%s %02x\n", hex, c[j]);
+                sscanf(hex2, "%02x",&d);
+                lla[j] =(unsigned char)d;
+                printf("%02x ",lla[j]);
                 i++;
             }
-
-            for (int i=0; i<16; i++)
+            std::cout << std::endl;
+            //Guardar los datos convertidos a hex al array usado para encriptar.
+            for (int i=0; i<32; i++)
             {
-                plaintext[i]=c[i];
+                Key[i]=lla[i];
             }
 
 
-            Expand_Keys();
-            Encrypt();
 
-            printf("\nEncrypted: \n");
-                //cout << encrypted;
-                for(i = 0; i < keyLength * blockSize; i++)
+            //SEPARAR TEXTO EN BLOQUES
+            QString hex =string_to_hex(texto);
+            string tmp = hex.toStdString();
+            std::cout << "TEXTO HEX: " << tmp << std::endl;
+
+            char *hex2 = new char[tmp.length()+1];
+            std::strcpy(hex2, tmp.c_str());
+            vector<string> separado2 = Separar2(hex2);
+            std::cout << "Bloques: " << separado2.size() << endl;
+
+            for(auto i:separado2)
+            {
+                std::cout << "Tamaño: " << i.size() << std::endl;
+                std::cout << i << std::endl;
+
+            }
+
+            string encript="";
+
+
+
+            for(int b=0 ; b<separado2.size(); b++  )
+            {
+
+
+                unsigned char c[16];
+
+                for( int i=0, j=0; i<separado2.at(b).size(); i++, j++  )
                 {
-                    printf("%02x ", encrypted[i]);
+                    char *hex = new char[2];
+                    std::strcpy(hex, separado2.at(b).substr(i,2).c_str() );
+                    int d;
+                    sscanf(hex, "%02x",&d);
+                    c[j] =(unsigned char)d;
+                    printf("%02x ",c[j]);
+                    i++;
+                }
+
+                //Guardar los datos convertidos a hex al array usado para encriptar.
+                for (int k=0; k<16; k++)
+                {
+                    plaintext[k]=c[k];
+                }
+
+
+                Expand_Keys();
+                Encrypt();
+
+                //convirtiendo a string lo encriptado
+                printf("\nEncrypted: \n");
+
+                for(int m = 0; m < keyLength * blockSize; m++)
+                {
+                    printf("%02x ", encrypted[m]);
+                    encript = encript  + string(1,char(encrypted[m]));
                 }
                 printf("\n\n");
 
+
+
+                QString hexENCR =string_to_hex( QString::fromStdString(encript));
+                string tmpENCR = hexENCR.toStdString();
+                std::cout << "TEXTO HEX: " << tmpENCR << std::endl;
+
+
+            }
+
+
+
+            ui->textEdit_3->setText(QString::fromStdString(encript));
+
+            /*
+            Expand_Keys();
+            Decrypt();
+
+            printf("\nDecrypted: \n");
+
+            for (i = 0; i < blockSize * 4; i++)
+            {
+                printf("%02x ", decrypted[i]);
+            }
+            printf("\n\n");
+            */
         }
 
 
