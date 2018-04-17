@@ -107,30 +107,6 @@ void MainWindow::on_pushButton_clicked()
 {
     QString texto = ui->textEdit->toPlainText();
     QString llav = ui->textEdit_2->toPlainText();
-    string plainText = texto.toStdString();
-    string llave = llav.toStdString();
-
-//    char *encriptado = &plainText[0u];
-//    char *llavedes = &llave[0u];
-
-//    const char* encriptado = plainText.c_str();
-//    const char* llavedes = llave.c_str();
-
-    char *encriptado = new char[plainText.length()+1];
-    char *llavedes = new char[llave.length()+1];
-
-    std::strcpy(encriptado, plainText.c_str());
-    std::strcpy(llavedes, llave.c_str());
-
-    short key[4], S[512], S_inv[512];
-    K = (uchar **) calloc(2 * ROUNDS + 3, sizeof(char *));
-    for (i = 0; i < 2 * ROUNDS + 3; i++) {
-        K[i] = (uchar *) calloc(9, sizeof(char));
-    }
-    key[0] = 256 * 8 + 7;
-    key[1] = 256 * 6 + 5;
-    key[2] = 256 * 4 + 3;
-    key[3] = 256 * 2 + 1;
 
     // ------------------------ RIJNDAEL -----------------------//
     if(RoS == false){
@@ -198,6 +174,25 @@ void MainWindow::on_pushButton_clicked()
 
     // --------------------------SAFER --------------------------//
     else{
+
+        string plainText = texto.toStdString();
+        string llave = llav.toStdString();
+
+        char *encriptado = new char[plainText.length()+1];
+        char *llavedes = new char[llave.length()+1];
+
+        std::strcpy(encriptado, plainText.c_str());
+        std::strcpy(llavedes, llave.c_str());
+
+        short key[4], S[512], S_inv[512];
+        K = (uchar **) calloc(2 * ROUNDS + 3, sizeof(char *));
+        for (i = 0; i < 2 * ROUNDS + 3; i++) {
+            K[i] = (uchar *) calloc(9, sizeof(char));
+        }
+        key[0] = 256 * 8 + 7;
+        key[1] = 256 * 6 + 5;
+        key[2] = 256 * 4 + 3;
+        key[3] = 256 * 2 + 1;
 
         vector<string> bloques;
         bloques = Separar(encriptado);
