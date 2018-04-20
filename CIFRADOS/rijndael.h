@@ -45,7 +45,6 @@ QString string_to_hex(QString palabras)
 
 
 
-
 // Returns Rijndael S-box value
 int get_SBox_Value(int num)
 {

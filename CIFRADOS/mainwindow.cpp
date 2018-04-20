@@ -238,8 +238,20 @@ void MainWindow::on_pushButton_clicked()
             }
 
 
-            cout << "Encriptado Final:" << encript << endl;
-            ui->textEdit_3->setText(QString::fromStdString(encript));
+            cout << "Encriptado Final HEX:" << encript << endl;
+
+
+            QByteArray ar1 = QString::fromStdString(encript).toLatin1();
+            QByteArray ar2 = QByteArray::fromHex(ar1);
+            QString finalEncrypt = QString::fromLatin1(ar2.data(), ar2.size());
+
+            ui->textEdit_3->setText(finalEncrypt);
+            ui->textEdit_3->moveCursor (QTextCursor::End);
+            ui->textEdit_3->insertPlainText ("\nHEX:");
+            ui->textEdit_3->moveCursor (QTextCursor::End);
+            ui->textEdit_3->insertPlainText (string_to_hex(finalEncrypt));
+            ui->textEdit_3->moveCursor (QTextCursor::End);
+
 
             //Desencriptar
             /*Expand_Keys();
