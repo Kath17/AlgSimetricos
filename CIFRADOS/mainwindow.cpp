@@ -131,7 +131,7 @@ void MainWindow::on_pushButton_clicked()
 
             //Tamaño de llave por defecto.
             rounds = 256; std::cout << "Tamaño de la llave:" << rounds << std::endl;
-            keyLength = rounds/32; std::cout << "Tamaño de la llave:" << keyLength << std::endl;
+            keyLength = rounds/32; std::cout << "Tamaño de la llave usuario:" << keyLength << std::endl;
             rounds = keyLength + 6; std::cout << "Rondas:" << rounds << std::endl;
             //CONVERTIR LLAVE EN HEXADECIMAL.
             QString hex_llav =string_to_hex(llav);
@@ -202,35 +202,47 @@ void MainWindow::on_pushButton_clicked()
                     plaintext[k]=c[k];
                 }
 
-
+                //ENCRIPTAR
                 Expand_Keys();
                 Encrypt();
 
-                //convirtiendo a string lo encriptado
+                //imprimiendo lo encriptado
                 printf("\nEncrypted: \n");
 
                 for(int m = 0; m < keyLength * blockSize; m++)
                 {
                     printf("%02x ", encrypted[m]);
-                    encript = encript  + string(1,char(encrypted[m]));
+
                 }
                 printf("\n\n");
 
+                //convertir el hex a string de hex
+                char converted[(keyLength * blockSize)*2 + 1];
+                int i;
+
+                for(i=0;i<keyLength * blockSize;i++) {
+                    sprintf(&converted[i*2], "%02x", encrypted[i]);
+
+                  }
+
+                //Concatenando los textos encriptados en hex.
+                encript = encript + std::string(converted);
 
 
-                QString hexENCR =string_to_hex( QString::fromStdString(encript));
-                string tmpENCR = hexENCR.toStdString();
-                std::cout << "TEXTO HEX: " << tmpENCR << std::endl;
+
+                //QString hexENCR =string_to_hex( QString::fromStdString(encript));
+                //string tmpENCR = hexENCR.toStdString();
+                //std::cout << "TEXTO HEX: " << tmpENCR << std::endl;
 
 
             }
 
 
-
+            cout << "Encriptado Final:" << encript << endl;
             ui->textEdit_3->setText(QString::fromStdString(encript));
 
-            /*
-            Expand_Keys();
+            //Desencriptar
+            /*Expand_Keys();
             Decrypt();
 
             printf("\nDecrypted: \n");
@@ -239,8 +251,8 @@ void MainWindow::on_pushButton_clicked()
             {
                 printf("%02x ", decrypted[i]);
             }
-            printf("\n\n");
-            */
+            printf("\n\n");*/
+
         }
 
 
