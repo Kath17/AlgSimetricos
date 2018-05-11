@@ -140,7 +140,7 @@ void Expand_Keys()
         }
         if (i % keyLength == 0)
         {
-            // Rotate the bytes in a word to the left.
+            // Rotate the bytes in a word to the left. (ROTWORD)
             {
                 k = temp[0];
                 temp[0] = temp[1];
@@ -149,7 +149,7 @@ void Expand_Keys()
                 temp[3] = k;
             }
 
-            // Take a four-byte input and apply the S-box to each of the four bytes
+            // Take a four-byte input and apply the S-box to each of the four bytes (SUBBYTE)
             {
                 temp[0]=get_SBox_Value(temp[0]);
                 temp[1]=get_SBox_Value(temp[1]);
@@ -157,7 +157,7 @@ void Expand_Keys()
                 temp[3]=get_SBox_Value(temp[3]);
             }
 
-            temp[0] =  temp[0] ^ Rcon[i/keyLength];
+            temp[0] =  temp[0] ^ Rcon[i/keyLength]; //(RCON)
         }
         else if (keyLength > 6 && i % keyLength == 4)
         {

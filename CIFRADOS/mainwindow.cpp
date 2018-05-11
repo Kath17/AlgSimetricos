@@ -6,6 +6,7 @@
 #include <cstring>
 #include <string>
 #include <sstream>
+#include <QDebug>
 
 using namespace std;
 
@@ -209,7 +210,7 @@ void MainWindow::on_pushButton_clicked()
                 //imprimiendo lo encriptado
                 printf("\nEncrypted: \n");
 
-                for(int m = 0; m < keyLength * blockSize; m++)
+                for(int m = 0; m < 4* blockSize; m++)
                 {
                     printf("%02x ", encrypted[m]);
 
@@ -217,10 +218,10 @@ void MainWindow::on_pushButton_clicked()
                 printf("\n\n");
 
                 //convertir el hex a string de hex
-                char converted[(keyLength * blockSize)*2 + 1];
+                char converted[(4 * blockSize)*2 + 1];
                 int i;
 
-                for(i=0;i<keyLength * blockSize;i++) {
+                for(i=0;i<4 * blockSize;i++) {
                     sprintf(&converted[i*2], "%02x", encrypted[i]);
 
                   }
@@ -238,7 +239,7 @@ void MainWindow::on_pushButton_clicked()
             }
 
 
-            cout << "Encriptado Final HEX:" << encript << endl;
+            cout << "Encriptado Final HEX: " << encript << endl;
 
 
             QByteArray ar1 = QString::fromStdString(encript).toLatin1();
@@ -250,11 +251,14 @@ void MainWindow::on_pushButton_clicked()
             ui->textEdit_3->insertPlainText ("\nHEX:");
             ui->textEdit_3->moveCursor (QTextCursor::End);
             ui->textEdit_3->insertPlainText (string_to_hex(finalEncrypt));
-            ui->textEdit_3->moveCursor (QTextCursor::End);
+            ui->textEdit_3->moveCursor (QTextCursor::Start);
 
 
             //Desencriptar
-            /*Expand_Keys();
+
+
+
+            Expand_Keys();
             Decrypt();
 
             printf("\nDecrypted: \n");
@@ -263,7 +267,7 @@ void MainWindow::on_pushButton_clicked()
             {
                 printf("%02x ", decrypted[i]);
             }
-            printf("\n\n");*/
+            printf("\n\n");
 
         }
 

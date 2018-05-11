@@ -49,7 +49,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(387, 579);
+        MainWindow->resize(502, 594);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         label = new QLabel(centralWidget);
@@ -57,12 +57,12 @@ public:
         label->setGeometry(QRect(10, 10, 121, 18));
         textEdit = new QTextEdit(centralWidget);
         textEdit->setObjectName(QStringLiteral("textEdit"));
-        textEdit->setGeometry(QRect(10, 200, 361, 111));
+        textEdit->setGeometry(QRect(10, 200, 481, 111));
         comboBox = new QComboBox(centralWidget);
         comboBox->addItem(QString());
         comboBox->addItem(QString());
         comboBox->setObjectName(QStringLiteral("comboBox"));
-        comboBox->setGeometry(QRect(110, 10, 261, 26));
+        comboBox->setGeometry(QRect(110, 10, 381, 26));
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(10, 180, 191, 18));
@@ -71,20 +71,20 @@ public:
         label_3->setGeometry(QRect(10, 320, 201, 18));
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(120, 500, 131, 26));
+        pushButton->setGeometry(QRect(190, 500, 131, 26));
         label_5 = new QLabel(centralWidget);
         label_5->setObjectName(QStringLiteral("label_5"));
         label_5->setGeometry(QRect(10, 40, 81, 18));
         textEdit_2 = new QTextEdit(centralWidget);
         textEdit_2->setObjectName(QStringLiteral("textEdit_2"));
-        textEdit_2->setGeometry(QRect(10, 60, 361, 111));
+        textEdit_2->setGeometry(QRect(10, 60, 481, 111));
         textEdit_3 = new QTextEdit(centralWidget);
         textEdit_3->setObjectName(QStringLiteral("textEdit_3"));
-        textEdit_3->setGeometry(QRect(10, 340, 361, 151));
+        textEdit_3->setGeometry(QRect(10, 340, 481, 151));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 387, 23));
+        menuBar->setGeometry(QRect(0, 0, 502, 22));
         menuCIFRADOS = new QMenu(menuBar);
         menuCIFRADOS->setObjectName(QStringLiteral("menuCIFRADOS"));
         MainWindow->setMenuBar(menuBar);
